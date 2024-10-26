@@ -1,0 +1,50 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./mydatabase.db"
+}
+
+// datasource db {
+//   provider = "postgresql"
+//   url      = env("DATABASE_URL")
+// }
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// enum userRole {
+//   admin
+//   manager
+//   customer
+//   guest
+// }
+
+// model user {
+//   id               String     @id @default(uuid())
+//   firstName        String?
+//   email            String     @unique
+//   password         String
+//   isEmailConfirmed Boolean    @default(false)
+//   role             userRole   @default(guest)
+//   created_at       DateTime   @default(now())
+//   updated_at       DateTime   @default(now())
+//   tokenVersion     Int        @default(0)
+//   blogItem         blogItem[]
+// }
+
+model blogItem {
+  id          String   @id @default(uuid())
+  // userId      String   @db.Uuid
+  // user        user     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  imageA1Name String
+  imageB1Name String
+  imageB2Name String
+  imageC1Name String
+  imageC2Name String
+  imageC3Name String
+  noteHead    String?
+  noteMain    String?
+  noteBottom  String?
+}
