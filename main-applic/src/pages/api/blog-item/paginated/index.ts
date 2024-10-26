@@ -1,52 +1,41 @@
 import { type NextApiRequest, type NextApiResponse } from "next";
+import prisma from "../../../../database-connector";
+
+interface PaginatedResult {
+    items: any[],
+    totalPages: number
+}
+
+const calculatePagination = (page: number, limit: number): { startIndex: number, limit: number } => ({
+    startIndex: (page - 1) * limit,
+    limit,
+});
 
 const getHandler = async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     try {
-        // const page = Number(req.query.page);
-        const limit = Number(req.query.limit);
+        const page = parseInt(req.query.page as string) || 1;
+        const limit = parseInt(req.query.limit as string) || 10;
 
-        // console.log(page, limit);
+        const { startIndex, limit: take } = calculatePagination(page, limit);
 
-        // const startIndex = (page - 1) * limit;
+        const [totalItems, items] = await prisma.$transaction([
+            prisma.blogItem.count(),
+            prisma.blogItem.findMany({
+                skip: startIndex,
+                take,
+                orderBy: { createdAt: "desc" },
+            }),
+        ]);
 
-        // const submission = await prisma.$transaction([
-        //     prisma.blogItem.count(),
-        //     prisma.blogItem.findMany({ skip: startIndex, take: limit, orderBy: { createdAt: "desc" } }),
-        // ]);
+        const totalPages = Math.ceil(totalItems / limit);
 
-        // const totalPages = 0; // submission[0] ?? 0;
-        // const result = {
-        //     items: submission[1] as [],
-        //     totalPages: Math.ceil(totalPages / limit),
-        // };
+        const result: PaginatedResult = { items, totalPages };
 
-        const totalPages = 1; // submission[0] ?? 0;
-        const result = {
-            items: [
-                {
-                    id: "53f7f5ea-47d4-42a6-b3db-88c78ea19ce8",
-                    userId: "66955373-fb2e-48aa-99f4-6d96c4725a70",
-                    createdAt: "2024-02-17T12:50:01.951Z",
-                    updatedAt: "2024-02-17T12:50:06.233Z",
-                    imageA1Name: "A1.jpg",
-                    imageB1Name: "B1.jpg",
-                    imageB2Name: "B2.jpg",
-                    imageC1Name: "C1.jpg",
-                    imageC2Name: "C2.jpg",
-                    imageC3Name: "C3.jpg",
-                    noteHead: "Пример заголовка",
-                    noteMain: "Main text",
-                    noteBottom: "Пример подвала",
-                },
-            ],
-            totalPages: Math.ceil(totalPages / limit),
-        };
-
-        // console.log(result);
         res.status(200).json(result);
     }
     catch (error) {
-        res.status(500).json(error);
+        console.error("Error fetching paginated data:", error);
+        res.status(500).json({ message: "Internal Server Error" });
     }
 };
 
