@@ -1,0 +1,19 @@
+
+# ignore directories
+/node_modules/*
+/dist/*
+/public/temporary/*
+
+# ignore files
+**/*.gitignore
+**/.gitignore
+
+node_modules
+.dockerignore
+Dockerfile
+.git
+.gitignore
+README.md
+
+**/*.db
+*.db

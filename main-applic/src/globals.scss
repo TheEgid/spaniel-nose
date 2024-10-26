@@ -1,0 +1,62 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans");
+@import "../node_modules/bootstrap/scss/functions";
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/mixins";
+@import "../node_modules/bootstrap/scss/variables-dark";
+@import "../node_modules/bootstrap/scss/maps";
+@import "../node_modules/bootstrap/scss/root";
+@import "../node_modules/bootstrap/scss/utilities";
+@import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+
+$transformed: scale(1.007);
+$main-orange-color: rgb(227 82 5);
+$light-orange-color: rgb(225 143 0);
+$accent-color: rgb(89 41 36);
+$disabled-color: rgb(191 191 201);
+
+html {
+    /* Поля фиксированные и на них не влияет полоска прокрутки справа */
+    padding: 0 calc(20px - (100vw - 100%)) 0 0;
+
+    font-family: Tahoma, Verdana, sans-serif !important;
+    font-size: 10px !important;
+}
+
+.ml-auto {
+    margin-left: auto !important;
+}
+
+.mr-auto {
+    margin-right: auto !important;
+}
+
+input,
+.input-group,
+.input-group-text .form-control-sm {
+    align-items: baseline;
+
+    font-size: 1rem;
+}
+
+.input-group-text.el-requred {
+    border: thick double rgb(61 200 212);
+}
+
+.radio-main-requred {
+    width: 280px;
+    padding: 3.5px;
+
+    cursor: pointer;
+}
+
+.scrollable {
+    overflow: hidden scroll;    /* Скрывает горизонтальную полосу прокрутки */    /* Полоса прокрутки по вертикали */
+    justify-content: flex-start;
+
+    height: 90px;          /* Фиксированная высота */
+    direction: ltr;        /* Инвертирует расположение полосы прокрутки слева */
+}
+
+.scrollable > * {
+    direction: ltr;        /* Восстанавливает нормальное направление текста */
+}
